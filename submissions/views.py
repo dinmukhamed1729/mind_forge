@@ -9,8 +9,6 @@ from .services import SubmissionService, CodeExecutorFactory
 from rest_framework.parsers import MultiPartParser
 
 
-# Представление для работы с отправками кода
-
 class SubmissionViewSet(viewsets.ModelViewSet):
     serializer_class = SubmissionSerializer
     queryset = Submission.objects.all()
@@ -19,8 +17,9 @@ class SubmissionViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
+        print(request.data)
         serializer.is_valid(raise_exception=True)
-
+        print(serializer.validated_data)
         with transaction.atomic():
             submission = serializer.save(user=request.user, status='pending')
             self.submission_service.run_tests(submission)

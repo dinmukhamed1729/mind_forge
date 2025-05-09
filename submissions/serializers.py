@@ -5,6 +5,7 @@ from .models import Submission
 
 class SubmissionSerializer(serializers.ModelSerializer):
     file = serializers.FileField(write_only=True, required=False)
+    code = serializers.CharField(required=False)
 
     class Meta:
         model = Submission
